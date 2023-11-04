@@ -5,13 +5,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $year = $_POST['year'];
     $description = $_POST['description'];
     
-    createAward($year, $description);
+    $awardsManager = new AwardsManager();
+    header("Location: index.php");
     
-    header("Location: edit.php?year=$year");
-    exit();
+    $awardsManager->createAward($year, $description);
 }
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,11 +20,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <h1>Create New Award</h1>
     <form method="post">
         <label for="year">Year:</label>
-        <input type="text" name="year" required><br>
+        <input type="text" name="year" id="year" required>
+        <br>
         <label for="description">Description:</label>
-        <textarea name="description" required></textarea><br>
+        <textarea name="description" id="description" required></textarea>
+        <br>
         <input type="submit" value="Create">
     </form>
-    <a href="index.php">Back to List</a>
+    <a href="index.php">Back to Awards List</a>
 </body>
 </html>

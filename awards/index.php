@@ -1,7 +1,9 @@
 <?php
 include 'awards.php';
 
-$awards = getAllAwards();
+$awardsManager = new AwardsManager();
+
+$awards = $awardsManager->getAllAwards();
 ?>
 
 <!DOCTYPE html>
@@ -15,18 +17,23 @@ $awards = getAllAwards();
         <tr>
             <th>Year</th>
             <th>Description</th>
+            <th>Actions</th>
         </tr>
         <?php
-		if ($awards) {
-			foreach ($awards as $award) {
-			echo "<tr>";
-			echo "<td>$award</td>";
-			echo "<td><a href='detail.php?award=" . urlencode($award) . "'>View</a></td>"; // Include the entire award as a parameter
-			echo "</tr>";
-		}
-	}
-?>
-
+        if ($awards) {
+            foreach ($awards as $award) {
+                echo "<tr>";
+                echo "<td>" . $award['year'] . "</td>";
+                echo "<td>" . $award['description'] . "</td>";
+                echo "<td>";
+                echo "<a href='detail.php?award=" . urlencode($award['year']) . "'>View</a>";
+                echo " | <a href='edit.php?award=" . urlencode($award['year']) . "'>Edit</a>";
+                echo " | <a href='delete.php?award=" . urlencode($award['year']) . "'>Delete</a>";
+                echo "</td>";
+                echo "</tr>";
+            }
+        }
+        ?>
     </table>
     <a href="create.php">Create New Award</a>
 </body>

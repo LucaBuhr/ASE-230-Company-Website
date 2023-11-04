@@ -1,14 +1,18 @@
 <?php
 include 'awards.php';
 
-if (isset($_GET['year'])) {
-    $year = $_GET['year'];
+$awardsManager = new AwardsManager(); 
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $yearToDelete = $_POST['year']; 
+    $awardsManager->deleteAward($yearToDelete);
+
+    header("Location: index.php");
+    exit(); 
 }
 
-if (isset($_POST['confirm'])) {
-    deleteAward($year);
-    header("Location: index.php");
-    exit();
+if (isset($_GET['award'])) {
+    $yearToDelete = $_GET['award'];
 }
 ?>
 
@@ -21,8 +25,9 @@ if (isset($_POST['confirm'])) {
     <h1>Delete Award</h1>
     <p>Are you sure you want to delete this award?</p>
     <form method="post">
-        <input type="submit" name="confirm" value="Yes">
-        <a href="detail.php?year=<?php echo $year; ?>">No, Go Back</a>
+        <input type="hidden" name="year" value="<?php echo $yearToDelete; ?>">
+        <input type="submit" value="Delete">
     </form>
+    <a href="index.php">Cancel</a>
 </body>
 </html>

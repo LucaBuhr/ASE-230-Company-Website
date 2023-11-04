@@ -1,18 +1,21 @@
 <?php
 include 'awards.php';
 
-if (isset($_GET['award'])) {
-    $award = urldecode($_GET['award']);
-}
+$awardsManager = new AwardsManager(); 
 
-if (isset($_POST['save'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $year = $_POST['year'];
     $newDescription = $_POST['description'];
-    modifyAward($award, $newDescription);
-    
-    // Update the $award variable with the modified description
-    $award = $newDescription;
+    $awardsManager->modifyAward($year, $newDescription);
+
+    header("Location: index.php");
+    exit();
 }
 
+if (isset($_GET['award'])) {
+    $year = $_GET['award'];
+    $description = $awardsManager->getAwardById($year);
+}
 ?>
 
 <!DOCTYPE html>
@@ -22,18 +25,13 @@ if (isset($_POST['save'])) {
 </head>
 <body>
     <h1>Edit Award</h1>
-    <?php
-    if (isset($award)) {
-        echo "<form method='post'>";
-        echo "<label for='description'>Description:</label>";
-        echo "<textarea name='description' required>$award</textarea><br>";
-        echo "<input type='submit' name='save' value='Save Changes'>";
-        echo "</form>";
-        echo "<a href='detail.php?award=" . urlencode($award) . "'>Back to Details</a>";
-    } else {
-        echo "<p>Item not found</p>";
-    }
-    ?>
-    <a href="index.php">Back to List</a>
+    <form method="post">
+        <input type="hidden" name="year" value="<?php echo $year; ?>">
+        <label for="description">Description:</label>
+        <textarea name="description" id="description" required><?php echo $description; ?></textarea>
+        <br>
+        <input type="submit" value="Save">
+    </form>
+    <a href="index.php">Cancel</a>
 </body>
 </html>
