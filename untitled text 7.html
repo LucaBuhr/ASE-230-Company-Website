@@ -1,0 +1,148 @@
+<?php
+// Function to retrieve all products
+function getProducts() {
+    $csvFile = 'products.csv';
+    $products = [];
+
+    if (($handle = fopen($csvFile, 'r')) !== false) {
+        while (($data = fgetcsv($handle, 1000, ',')) !== false) {
+            $product = [
+                'name' => $data[0],
+                'description' => $data[1],
+                'features' => $data[2]
+            ];
+            $products[] = $product;
+        }
+        fclose($handle);
+    }
+
+    return $products;
+}
+
+// Function to retrieve a specific product by ID
+function getProductById($productId) {
+    $csvFile = 'products.csv';
+
+    if (($handle = fopen($csvFile, 'r')) !== false) {
+        while (($data = fgetcsv($handle, 1000, ',')) !== false) {
+            if ($data[0] == $productId) {
+                $product = [
+                    'name' => $data[0],
+                    'description' => $data[1],
+                    'features' => $data[2]
+                ];
+                fclose($handle);
+                return $product;
+            }
+        }
+        fclose($handle);
+    }
+
+    return null;
+}
+
+// Function to create a new product
+function createProduct($productData) {
+    $csvFile = 'products.csv';
+
+    // Prepare the data for the new product
+    $newProduct = [
+        $productData['name'],
+        $productData['description'],
+        $productData['features']
+    ];
+
+    // Open the CSV file for writing
+    $handle = fopen($csvFile, 'a');
+
+    if ($handle !== false) {
+        // Write the new product data to the CSV file
+        fputcsv($handle, $newProduct);
+        fclose($handle);
+        return true;
+    } else {
+        return false;
+    }
+}
+
+// Function to update an existing product
+function updateProduct($productId, $productData) {
+    $csvFile = 'products.csv';
+
+    // Read the existing products from the CSV file
+    $products = [];
+    if (($handle = fopen($csvFile, 'r')) !== false) {
+        while (($data = fgetcsv($handle, 1000, ',')) !== false) {
+            $products[] = $data;
+        }
+        fclose($handle);
+    }
+
+    // Find the product to update by ID
+    $updated = false;
+    foreach ($products as &$product) {
+        if ($product[0] == $productId) {
+            $product[1] = $productData['description'];
+            $product[2] = $productData['features'];
+            $updated = true;
+            break;
+        }
+    }
+
+    // Write the updated products back to the CSV file
+    if ($updated) {
+        if (($handle = fopen($csvFile, 'w')) !== false) {
+            foreach ($products as $product) {
+                fputcsv($handle, $product);
+            }
+            fclose($handle);
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
+
+// Function to delete a product
+function deleteProduct($productId) {
+    $csvFile = 'products.csv';
+
+    // Read the existing products from the CSV file
+    $products = [];
+    if (($handle = fopen($csvFile, 'r')) !== false) {
+        while (($data = fgetcsv($handle, 1000, ',')) !== false) {
+            $products[] = $data;
+        }
+        fclose($handle);
+    }
+
+    // Find the product to delete by ID
+    $deleted = false;
+    foreach ($products as $key => $product) {
+        if ($product[0] == $productId) {
+            unset($products[$key]);
+            $deleted = true;
+            break;
+        }
+    }
+
+    // Write the updated products (with the product removed) back to the CSV file
+    if ($deleted) {
+        if (($handle = fopen($csvFile, 'w')) !== false) {
+            foreach ($products as $product) {
+                fputcsv($handle, $product);
+            }
+            fclose($handle);
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
+
+// Add any additional functions as needed
+?>
