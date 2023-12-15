@@ -22,6 +22,8 @@ $awards = getAllAwards();
 			echo "<tr>";
 			echo "<td>$award</td>";
 			echo "<td><a href='detail.php?award=" . urlencode($award) . "'>View</a></td>"; // Include the entire award as a parameter
+            echo "<td><a href='delete.php?award=" . urlencode($award) . "'>Delete</a></td>";
+            echo "<td><a href='edit.php?award=" . urlencode($award) . "'>Edit</a></td>";
 			echo "</tr>";
 		}
 	}

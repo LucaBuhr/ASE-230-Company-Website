@@ -1,7 +1,7 @@
 <?php
 // Function to retrieve and index all items from the database
 function getAllAwards() {
-    $awardsFile = '/Users/lucbu/Desktop/xamp/htdocs/ASE-230/04/awards.txt';
+    $awardsFile = 'C:\Users\lucbu\OneDrive\XAMPP\htdocs\ASE-230\04\admin\awards\awards.txt';
     if (file_exists($awardsFile)) {
         $awards = file($awardsFile, FILE_IGNORE_NEW_LINES);
         return $awards;
@@ -26,7 +26,7 @@ function getAwardById($year) {
 
 // Function to create a new item in the database
 function createAward($year, $description) {
-    $awardsFile = '/Users/lucbu/Desktop/xamp/htdocs/ASE-230/04/awards.txt';
+    $awardsFile = 'C:\Users\lucbu\OneDrive\XAMPP\htdocs\ASE-230\04\admin\awards\awards.txt';
     $award = $year . ': ' . $description . PHP_EOL;
     file_put_contents($awardsFile, $award, FILE_APPEND);
     return true;
@@ -34,7 +34,7 @@ function createAward($year, $description) {
 
 // Function to modify an existing award in the database
 function modifyAward($oldAward, $newDescription) {
-    $awardsFile = '/Users/lucbu/Desktop/xamp/htdocs/ASE-230/04/awards.txt';
+    $awardsFile = 'C:\Users\lucbu\OneDrive\XAMPP\htdocs\ASE-230\04\admin\awards\awards.txt';
     $awards = getAllAwards();
     
     if ($awards) {
@@ -56,7 +56,7 @@ function modifyAward($oldAward, $newDescription) {
 
 
 function deleteAward($award) {
-    $awardsFile = '/Users/lucbu/Desktop/xamp/htdocs/ASE-230/04/awards.txt';
+    $awardsFile = 'C:\Users\lucbu\OneDrive\XAMPP\htdocs\ASE-230\04\admin\awards\awards.txt';
     $awards = getAllAwards();
     
     if ($awards) {
